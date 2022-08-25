@@ -1,0 +1,7 @@
+/cmake-*/
+/.idea/
+/CMakeFiles/
+CMakeCache.txt
+Makefile
+/cmake_*
+/cfa
