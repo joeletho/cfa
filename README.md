@@ -2,8 +2,8 @@
 
 #### This program serves two purposes: 1) obtaining the number or occurrences of ASCII characters in a given file, and 2) obtain the rank of ASCII characters in given file.
 
-<img align="left" width="200" height="343" src="">
-<img align="center" width="200" height="343" src="">
+<img align="left" width="200" height="343" src="https://github.com/joeletho/cfa/blob/main/assets/images/cfa_count.png">
+<img align="center" width="200" height="343" src="https://github.com/joeletho/cfa/blob/main/assets/images/cfa_rank.png">
 
 #### To begin, clone the repo and move into the directory:
 ```bash
