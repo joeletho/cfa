@@ -1,7 +1,5 @@
 // src/cfa.h
 
-#pragma once
-
 #include <cassert>
 #include <algorithm>
 #include <vector>
@@ -57,22 +55,22 @@ namespace cfa
     //----------------------------------------------------
 
     template<typename Num>
-    std::unique_ptr<CharMap<Num>> get_char_count_map (std::string &str, ParseType type);
+    std::unique_ptr <CharMap<Num>> get_char_count_map (std::string &str, ParseType type);
     template<typename Num>
-    std::unique_ptr<CharMap<Num>> get_char_count_map (std::ifstream &opened_file, ParseType type);
+    std::unique_ptr <CharMap<Num>> get_char_count_map (std::ifstream &opened_file, ParseType type);
     template<typename Num>
-    std::unique_ptr<CharVec<Num>> get_char_count_vec (std::string &str, ParseType type);
+    std::unique_ptr <CharVec<Num>> get_char_count_vec (std::string &str, ParseType type);
     template<typename Num>
-    std::unique_ptr<CharVec<Num>> get_char_count_vec (std::ifstream &opened_file, ParseType type);
+    std::unique_ptr <CharVec<Num>> get_char_count_vec (std::ifstream &opened_file, ParseType type);
 
     //----------------------------------------------------
     //  [ SECTION FUNCTIONS ]   Character ranks
     //----------------------------------------------------
 
-    std::unique_ptr<CharMap<float>> get_char_rank_map (std::string &str, ParseType type);
-    std::unique_ptr<CharMap<float>> get_char_rank_map (std::ifstream &opened_file, ParseType type);
-    std::unique_ptr<CharVec<float>> get_char_rank_vec (std::string &str, ParseType type);
-    std::unique_ptr<CharVec<float>> get_char_rank_vec (std::ifstream &opened_file, ParseType type);
+    std::unique_ptr <CharMap<float>> get_char_rank_map (std::string &str, ParseType type);
+    std::unique_ptr <CharMap<float>> get_char_rank_map (std::ifstream &opened_file, ParseType type);
+    std::unique_ptr <CharVec<float>> get_char_rank_vec (std::string &str, ParseType type);
+    std::unique_ptr <CharVec<float>> get_char_rank_vec (std::ifstream &opened_file, ParseType type);
 
     //----------------------------------------------------
     //  [ SECTION FUNCTIONS ]   Display
@@ -81,8 +79,8 @@ namespace cfa
     void header_prompt ();
     void file_count_program ();
     void file_rank_program ();
-    void print_char_count (std::unique_ptr<CharVec<int>> &vec);
-    void print_char_rank (std::unique_ptr<CharVec<float>> &vec);
+    void print_char_count (std::unique_ptr <CharVec<int>> &vec);
+    void print_char_rank (std::unique_ptr <CharVec<float>> &vec);
 }
 
 //----------------------------------------------------
@@ -90,19 +88,19 @@ namespace cfa
 //----------------------------------------------------
 
 namespace cfa::tests
-{
-    // Helpers
-    std::string get_filename ();
-    std::string generate_test_file ();
-    SortMethod get_sort_method ();
-    ParseType get_parse_selection ();
-    int get_display_value ();
+    {
+        // Helpers
+        std::string get_filename ();
+        std::string generate_test_file ();
+        SortMethod get_sort_method ();
+        ParseType get_parse_selection ();
+        int get_display_value ();
 
-    // Tests
-    void run_test_program ();
-    void test_file_read ();
-    void test_user_input ();
-}
+        // Tests
+        void run_test_program ();
+        void test_file_read ();
+        void test_user_input ();
+    }
 
 //----------------------------------------------------//
 //----------------------------------------------------//
@@ -124,7 +122,7 @@ namespace cfa
 
         CharMap<Num> () = default;
 
-        explicit CharMap<Num> (std::unique_ptr<CharMap<Num>> map)
+        explicit CharMap<Num> (std::unique_ptr <CharMap<Num>> map)
         {
           if (this != map)
             {
@@ -196,45 +194,45 @@ namespace cfa
             }
         }
 
-        std::unique_ptr<CharMap<Num>> ranks_to_map ()
+        std::unique_ptr <CharMap<Num>> ranks_to_map ()
         {
-          std::unique_ptr<CharMap<Num>> tmp (new CharMap<Num> (*this));
+          CharMap<Num> tmp (*this);
 
           // We use _sum_ to normalize the results.
           [[maybe_unused]] float sum = 0;
-          for ([[maybe_unused]] auto &[c, n]: tmp->Data)
+          for ([[maybe_unused]] auto &[c, n]: tmp.Data)
             {
               sum += n;
             }
 
-          for ([[maybe_unused]] auto &[c, n]: tmp->Data)
+          for ([[maybe_unused]] auto &[c, n]: tmp.Data)
             {
-              tmp->Data[c] = n / (float) sum;
+              tmp.Data[c] = n / (float) sum;
             }
 
-          return tmp;
+          return std::make_unique<CharMap<Num>> (tmp);
         }
 
-        std::unique_ptr<CharVec<Num>> ranks_to_vec ()
+        std::unique_ptr <CharVec<Num>> ranks_to_vec ()
         {
           return ranks_to_map ()->copy_to_vec ();
         }
 
-        std::unique_ptr<CharVec<Num>> copy_to_vec ()
+        std::unique_ptr <CharVec<Num>> copy_to_vec ()
         {
-          std::unique_ptr<CharVec<Num>> vec (new CharVec<Num>);
+          CharVec<Num> vec;
           for ([[maybe_unused]] auto pair: Data)
             {
-              vec->emplace_back (pair);
+              vec.emplace_back (pair);
             }
 
-          return vec;
+          return std::make_unique<CharVec<Num>> (vec);
         }
     };
 
     template<typename Num>
     struct CharVec {
-        std::vector<std::pair<char, Num>> Data;
+        std::vector <std::pair<char, Num>> Data;
 
         void emplace_back (std::pair<const char, Num> &pair)
         {
@@ -311,9 +309,9 @@ namespace cfa
     //----------------------------------------------------
 
     template<typename Num>
-    std::unique_ptr<CharMap<Num>> get_char_count_map (std::string &str, ParseType type)
+    std::unique_ptr <CharMap<Num>> get_char_count_map (std::string &str, ParseType type)
     {
-      std::unique_ptr<CharMap<Num>> char_map (new CharMap<Num>);
+      std::unique_ptr <CharMap<Num>> char_map (new CharMap<Num>);
 
       for (char c: str)
         {
@@ -323,11 +321,11 @@ namespace cfa
     }
 
     template<typename Num>
-    std::unique_ptr<CharMap<Num>> get_char_count_map (std::ifstream &opened_file, ParseType type)
+    std::unique_ptr <CharMap<Num>> get_char_count_map (std::ifstream &opened_file, ParseType type)
     {
-      assert(opened_file.is_open ());
+      assert (opened_file.is_open ());
 
-      std::unique_ptr<CharMap<Num>> char_map (new CharMap<Num>);
+      std::unique_ptr <CharMap<Num>> char_map (new CharMap<Num>);
 
       opened_file.seekg (0);
       while (!opened_file.eof ())
@@ -341,13 +339,13 @@ namespace cfa
     }
 
     template<typename Num>
-    std::unique_ptr<CharVec<Num>> get_char_count_vec (std::string &str, ParseType type)
+    std::unique_ptr <CharVec<Num>> get_char_count_vec (std::string &str, ParseType type)
     {
       return get_char_count_map<Num> (str, type)->copy_to_vec ();
 
     }
     template<typename Num>
-    std::unique_ptr<CharVec<Num>> get_char_count_vec (std::ifstream &opened_file, ParseType type)
+    std::unique_ptr <CharVec<Num>> get_char_count_vec (std::ifstream &opened_file, ParseType type)
     {
       return get_char_count_map<Num> (opened_file, type)->copy_to_vec ();
     }
@@ -356,22 +354,22 @@ namespace cfa
     //  [ SECTION FUNCTIONS ]   Character ranks
     //----------------------------------------------------
 
-    std::unique_ptr<CharMap<float>> get_char_rank_map (std::string &str, ParseType type)
+    std::unique_ptr <CharMap<float>> get_char_rank_map (std::string &str, ParseType type)
     {
       return get_char_count_map<float> (str, type)->ranks_to_map ();
     }
 
-    std::unique_ptr<CharMap<float>> get_char_rank_map (std::ifstream &opened_file, ParseType type)
+    std::unique_ptr <CharMap<float>> get_char_rank_map (std::ifstream &opened_file, ParseType type)
     {
       return get_char_count_map<float> (opened_file, type)->ranks_to_map ();
     }
 
-    std::unique_ptr<CharVec<float>> get_char_rank_vec (std::string &str, ParseType type)
+    std::unique_ptr <CharVec<float>> get_char_rank_vec (std::string &str, ParseType type)
     {
       return get_char_count_map<float> (str, type)->ranks_to_vec ();
     }
 
-    std::unique_ptr<CharVec<float>> get_char_rank_vec (std::ifstream &opened_file, ParseType type)
+    std::unique_ptr <CharVec<float>> get_char_rank_vec (std::ifstream &opened_file, ParseType type)
     {
       return get_char_count_map<float> (opened_file, type)->ranks_to_vec ();
     }
@@ -443,7 +441,7 @@ namespace cfa
         }
     }
 
-    void print_char_count (std::unique_ptr<CharVec<int>> &vec)
+    void print_char_count (std::unique_ptr <CharVec<int>> &vec)
     {
       printf ("\n"
               "------------------\n"
@@ -458,7 +456,7 @@ namespace cfa
       printf ("\n");
     }
 
-    void print_char_rank (std::unique_ptr<CharVec<float>> &vec)
+    void print_char_rank (std::unique_ptr <CharVec<float>> &vec)
     {
       printf ("\n"
               "---------------------\n"
@@ -518,7 +516,7 @@ namespace cfa::tests
                         {
                           std::random_device dev;
                           std::mt19937 generator (dev ());
-                          std::uniform_int_distribution<std::mt19937::result_type> range (32, 126);
+                          std::uniform_int_distribution <std::mt19937::result_type> range (32, 126);
 
                           for (size_t i = 0; i < 1000 * 1000; ++i)
                             {

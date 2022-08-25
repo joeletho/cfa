@@ -1,7 +1,5 @@
 // src/utils.h
 
-#pragma once
-
 #include <fstream>
 #include <string>
 
