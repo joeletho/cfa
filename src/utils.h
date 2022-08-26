@@ -38,8 +38,9 @@ namespace utils::file
 
     std::ifstream get_file (std::string &filename)
     {
+      std::filesystem::path filepath(filename);
       std::ifstream file;
-      if (file.open (filename); !file)
+      if (file.open (filepath); !file)
         {
           // Check the previous directory (CMake works from `cmake-build-debug`)
           filename = "../" + filename;
