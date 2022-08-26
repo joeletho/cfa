@@ -4,6 +4,8 @@
 1) obtaining the number or occurrences of ASCII characters in a given file, and 
 2) obtain the rank of ASCII characters in given file.
 
+The given file can be a relative or absolute path to the file.
+
 Furthermore, the utility of this program doesn't end at the command line. The API has been abstracted in such a way that its functionality can be easily incorporated to use in other programs.
 
 <img align="left" width="200" height="343" src="https://github.com/joeletho/cfa/blob/main/assets/images/cfa_count.png">
